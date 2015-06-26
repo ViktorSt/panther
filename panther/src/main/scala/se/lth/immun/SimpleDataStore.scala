@@ -2,6 +2,7 @@ package se.lth.immun
 
 import scala.collection.mutable.HashMap
 
+
 class SimpleDataStore extends DataStore with DataStorer {
 
 	val dmLevel1 = new DataMatrix

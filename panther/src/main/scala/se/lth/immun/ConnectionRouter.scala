@@ -51,7 +51,6 @@ class SimplisticHandler(val dataStore: DataStore) extends Actor {
 		case Received(data) =>
 			//sender() ! Write(data)
 			//println("HANDLER: received command ")
-
 			val req = MasterRequest.parseFrom(data.toArray)
 
 			val reply = MasterReply.newBuilder
@@ -59,7 +58,6 @@ class SimplisticHandler(val dataStore: DataStore) extends Actor {
 				replyToGetStatus(reply)
 			if (req.hasGetTracesFor)
 				replyToGetTracesFor(reply, req.getGetTracesFor)
-			
 			val repBytes = reply.build.toByteArray
 			val sizeMsg = ReplySize.newBuilder.setSize(repBytes.length)
 			val headBytes = sizeMsg.build.toByteArray
