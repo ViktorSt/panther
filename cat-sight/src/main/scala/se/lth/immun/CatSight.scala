@@ -16,14 +16,23 @@ object CatSight extends CLIApp {
 	
 	
 	def main(args:Array[String]) = {
-		failOnError(parseArgs(name, version, args, params, List("traML"), None))
-		
+		failOnError(parseArgs(name, version, args, params, List(), None))
+		failOnError(parseParams(params.loadAssayConf, params.assayConf.value))
 		val system = ActorSystem()
 		
 		val swing = system.actorOf(
 				SwingActor.props(params).withDispatcher("swing-dispatcher"), 
 				"swing-actor"
 			)
+			
+		val initSourceDefs = params.parseSources.toSeq
+		if (initSourceDefs.nonEmpty) 
+			swing ! SwingActor.InitSourceDefs(initSourceDefs)
+			
+		swing ! params.loadAssayConf
+		
+		for (traML <- params.traMLOpt)
+			swing ! SwingActor.InitTraML(traML)
 		
 		system.awaitTermination
 		println("done")

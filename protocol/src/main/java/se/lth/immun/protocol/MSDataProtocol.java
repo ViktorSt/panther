@@ -7733,8 +7733,8 @@ public final class MSDataProtocol {
     // @@protoc_insertion_point(class_scope:se.lth.immun.protocol.Error)
   }
 
-  public interface ReplySizeOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:se.lth.immun.protocol.ReplySize)
+  public interface MsgSizeOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:se.lth.immun.protocol.MsgSize)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -7747,25 +7747,25 @@ public final class MSDataProtocol {
     int getSize();
   }
   /**
-   * Protobuf type {@code se.lth.immun.protocol.ReplySize}
+   * Protobuf type {@code se.lth.immun.protocol.MsgSize}
    */
-  public static final class ReplySize extends
+  public static final class MsgSize extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:se.lth.immun.protocol.ReplySize)
-      ReplySizeOrBuilder {
-    // Use ReplySize.newBuilder() to construct.
-    private ReplySize(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:se.lth.immun.protocol.MsgSize)
+      MsgSizeOrBuilder {
+    // Use MsgSize.newBuilder() to construct.
+    private MsgSize(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private ReplySize(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private MsgSize(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final ReplySize defaultInstance;
-    public static ReplySize getDefaultInstance() {
+    private static final MsgSize defaultInstance;
+    public static MsgSize getDefaultInstance() {
       return defaultInstance;
     }
 
-    public ReplySize getDefaultInstanceForType() {
+    public MsgSize getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -7775,7 +7775,7 @@ public final class MSDataProtocol {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private ReplySize(
+    private MsgSize(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -7817,28 +7817,28 @@ public final class MSDataProtocol {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return se.lth.immun.protocol.MSDataProtocol.internal_static_se_lth_immun_protocol_ReplySize_descriptor;
+      return se.lth.immun.protocol.MSDataProtocol.internal_static_se_lth_immun_protocol_MsgSize_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return se.lth.immun.protocol.MSDataProtocol.internal_static_se_lth_immun_protocol_ReplySize_fieldAccessorTable
+      return se.lth.immun.protocol.MSDataProtocol.internal_static_se_lth_immun_protocol_MsgSize_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              se.lth.immun.protocol.MSDataProtocol.ReplySize.class, se.lth.immun.protocol.MSDataProtocol.ReplySize.Builder.class);
+              se.lth.immun.protocol.MSDataProtocol.MsgSize.class, se.lth.immun.protocol.MSDataProtocol.MsgSize.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<ReplySize> PARSER =
-        new com.google.protobuf.AbstractParser<ReplySize>() {
-      public ReplySize parsePartialFrom(
+    public static com.google.protobuf.Parser<MsgSize> PARSER =
+        new com.google.protobuf.AbstractParser<MsgSize>() {
+      public MsgSize parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ReplySize(input, extensionRegistry);
+        return new MsgSize(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<ReplySize> getParserForType() {
+    public com.google.protobuf.Parser<MsgSize> getParserForType() {
       return PARSER;
     }
 
@@ -7906,53 +7906,53 @@ public final class MSDataProtocol {
       return super.writeReplace();
     }
 
-    public static se.lth.immun.protocol.MSDataProtocol.ReplySize parseFrom(
+    public static se.lth.immun.protocol.MSDataProtocol.MsgSize parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static se.lth.immun.protocol.MSDataProtocol.ReplySize parseFrom(
+    public static se.lth.immun.protocol.MSDataProtocol.MsgSize parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static se.lth.immun.protocol.MSDataProtocol.ReplySize parseFrom(byte[] data)
+    public static se.lth.immun.protocol.MSDataProtocol.MsgSize parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static se.lth.immun.protocol.MSDataProtocol.ReplySize parseFrom(
+    public static se.lth.immun.protocol.MSDataProtocol.MsgSize parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static se.lth.immun.protocol.MSDataProtocol.ReplySize parseFrom(java.io.InputStream input)
+    public static se.lth.immun.protocol.MSDataProtocol.MsgSize parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static se.lth.immun.protocol.MSDataProtocol.ReplySize parseFrom(
+    public static se.lth.immun.protocol.MSDataProtocol.MsgSize parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static se.lth.immun.protocol.MSDataProtocol.ReplySize parseDelimitedFrom(java.io.InputStream input)
+    public static se.lth.immun.protocol.MSDataProtocol.MsgSize parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static se.lth.immun.protocol.MSDataProtocol.ReplySize parseDelimitedFrom(
+    public static se.lth.immun.protocol.MSDataProtocol.MsgSize parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static se.lth.immun.protocol.MSDataProtocol.ReplySize parseFrom(
+    public static se.lth.immun.protocol.MSDataProtocol.MsgSize parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static se.lth.immun.protocol.MSDataProtocol.ReplySize parseFrom(
+    public static se.lth.immun.protocol.MSDataProtocol.MsgSize parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -7961,7 +7961,7 @@ public final class MSDataProtocol {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(se.lth.immun.protocol.MSDataProtocol.ReplySize prototype) {
+    public static Builder newBuilder(se.lth.immun.protocol.MSDataProtocol.MsgSize prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -7973,25 +7973,25 @@ public final class MSDataProtocol {
       return builder;
     }
     /**
-     * Protobuf type {@code se.lth.immun.protocol.ReplySize}
+     * Protobuf type {@code se.lth.immun.protocol.MsgSize}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:se.lth.immun.protocol.ReplySize)
-        se.lth.immun.protocol.MSDataProtocol.ReplySizeOrBuilder {
+        // @@protoc_insertion_point(builder_implements:se.lth.immun.protocol.MsgSize)
+        se.lth.immun.protocol.MSDataProtocol.MsgSizeOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return se.lth.immun.protocol.MSDataProtocol.internal_static_se_lth_immun_protocol_ReplySize_descriptor;
+        return se.lth.immun.protocol.MSDataProtocol.internal_static_se_lth_immun_protocol_MsgSize_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return se.lth.immun.protocol.MSDataProtocol.internal_static_se_lth_immun_protocol_ReplySize_fieldAccessorTable
+        return se.lth.immun.protocol.MSDataProtocol.internal_static_se_lth_immun_protocol_MsgSize_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                se.lth.immun.protocol.MSDataProtocol.ReplySize.class, se.lth.immun.protocol.MSDataProtocol.ReplySize.Builder.class);
+                se.lth.immun.protocol.MSDataProtocol.MsgSize.class, se.lth.immun.protocol.MSDataProtocol.MsgSize.Builder.class);
       }
 
-      // Construct using se.lth.immun.protocol.MSDataProtocol.ReplySize.newBuilder()
+      // Construct using se.lth.immun.protocol.MSDataProtocol.MsgSize.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -8022,23 +8022,23 @@ public final class MSDataProtocol {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return se.lth.immun.protocol.MSDataProtocol.internal_static_se_lth_immun_protocol_ReplySize_descriptor;
+        return se.lth.immun.protocol.MSDataProtocol.internal_static_se_lth_immun_protocol_MsgSize_descriptor;
       }
 
-      public se.lth.immun.protocol.MSDataProtocol.ReplySize getDefaultInstanceForType() {
-        return se.lth.immun.protocol.MSDataProtocol.ReplySize.getDefaultInstance();
+      public se.lth.immun.protocol.MSDataProtocol.MsgSize getDefaultInstanceForType() {
+        return se.lth.immun.protocol.MSDataProtocol.MsgSize.getDefaultInstance();
       }
 
-      public se.lth.immun.protocol.MSDataProtocol.ReplySize build() {
-        se.lth.immun.protocol.MSDataProtocol.ReplySize result = buildPartial();
+      public se.lth.immun.protocol.MSDataProtocol.MsgSize build() {
+        se.lth.immun.protocol.MSDataProtocol.MsgSize result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public se.lth.immun.protocol.MSDataProtocol.ReplySize buildPartial() {
-        se.lth.immun.protocol.MSDataProtocol.ReplySize result = new se.lth.immun.protocol.MSDataProtocol.ReplySize(this);
+      public se.lth.immun.protocol.MSDataProtocol.MsgSize buildPartial() {
+        se.lth.immun.protocol.MSDataProtocol.MsgSize result = new se.lth.immun.protocol.MSDataProtocol.MsgSize(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -8051,16 +8051,16 @@ public final class MSDataProtocol {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof se.lth.immun.protocol.MSDataProtocol.ReplySize) {
-          return mergeFrom((se.lth.immun.protocol.MSDataProtocol.ReplySize)other);
+        if (other instanceof se.lth.immun.protocol.MSDataProtocol.MsgSize) {
+          return mergeFrom((se.lth.immun.protocol.MSDataProtocol.MsgSize)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(se.lth.immun.protocol.MSDataProtocol.ReplySize other) {
-        if (other == se.lth.immun.protocol.MSDataProtocol.ReplySize.getDefaultInstance()) return this;
+      public Builder mergeFrom(se.lth.immun.protocol.MSDataProtocol.MsgSize other) {
+        if (other == se.lth.immun.protocol.MSDataProtocol.MsgSize.getDefaultInstance()) return this;
         if (other.hasSize()) {
           setSize(other.getSize());
         }
@@ -8080,11 +8080,11 @@ public final class MSDataProtocol {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        se.lth.immun.protocol.MSDataProtocol.ReplySize parsedMessage = null;
+        se.lth.immun.protocol.MSDataProtocol.MsgSize parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (se.lth.immun.protocol.MSDataProtocol.ReplySize) e.getUnfinishedMessage();
+          parsedMessage = (se.lth.immun.protocol.MSDataProtocol.MsgSize) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -8127,15 +8127,15 @@ public final class MSDataProtocol {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:se.lth.immun.protocol.ReplySize)
+      // @@protoc_insertion_point(builder_scope:se.lth.immun.protocol.MsgSize)
     }
 
     static {
-      defaultInstance = new ReplySize(true);
+      defaultInstance = new MsgSize(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:se.lth.immun.protocol.ReplySize)
+    // @@protoc_insertion_point(class_scope:se.lth.immun.protocol.MsgSize)
   }
 
   public interface MasterReplyOrBuilder extends
@@ -9182,10 +9182,10 @@ public final class MSDataProtocol {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_se_lth_immun_protocol_Error_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_se_lth_immun_protocol_ReplySize_descriptor;
+    internal_static_se_lth_immun_protocol_MsgSize_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_se_lth_immun_protocol_ReplySize_fieldAccessorTable;
+      internal_static_se_lth_immun_protocol_MsgSize_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_se_lth_immun_protocol_MasterReply_descriptor;
   private static
@@ -9226,13 +9226,13 @@ public final class MSDataProtocol {
       "tatus.StatusType\022\021\n\tstatusMsg\030\002 \001(\t\022\020\n\010p" +
       "rogress\030\003 \001(\001\022\023\n\013progressMax\030\004 \001(\001\"%\n\nSt" +
       "atusType\022\017\n\013loadingMzML\020\001\022\006\n\002up\020\002\"\"\n\005Err" +
-      "or\022\014\n\004type\030\001 \002(\005\022\013\n\003msg\030\002 \002(\t\"\031\n\tReplySi" +
-      "ze\022\014\n\004size\030\001 \002(\007\"\244\001\n\013MasterReply\022-\n\006stat" +
-      "us\030\001 \001(\0132\035.se.lth.immun.protocol.Status\022" +
-      "-\n\006traces\030\002 \001(\0132\035.se.lth.immun.protocol.",
-      "Traces\022\n\n\002id\030\017 \001(\005\022+\n\005error\030c \001(\0132\034.se.l" +
-      "th.immun.protocol.ErrorB\'\n\025se.lth.immun." +
-      "protocolB\016MSDataProtocol"
+      "or\022\014\n\004type\030\001 \002(\005\022\013\n\003msg\030\002 \002(\t\"\027\n\007MsgSize" +
+      "\022\014\n\004size\030\001 \002(\007\"\244\001\n\013MasterReply\022-\n\006status" +
+      "\030\001 \001(\0132\035.se.lth.immun.protocol.Status\022-\n" +
+      "\006traces\030\002 \001(\0132\035.se.lth.immun.protocol.Tr",
+      "aces\022\n\n\002id\030\017 \001(\005\022+\n\005error\030c \001(\0132\034.se.lth" +
+      ".immun.protocol.ErrorB\'\n\025se.lth.immun.pr" +
+      "otocolB\016MSDataProtocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9312,11 +9312,11 @@ public final class MSDataProtocol {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_se_lth_immun_protocol_Error_descriptor,
         new java.lang.String[] { "Type", "Msg", });
-    internal_static_se_lth_immun_protocol_ReplySize_descriptor =
+    internal_static_se_lth_immun_protocol_MsgSize_descriptor =
       getDescriptor().getMessageTypes().get(11);
-    internal_static_se_lth_immun_protocol_ReplySize_fieldAccessorTable = new
+    internal_static_se_lth_immun_protocol_MsgSize_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_se_lth_immun_protocol_ReplySize_descriptor,
+        internal_static_se_lth_immun_protocol_MsgSize_descriptor,
         new java.lang.String[] { "Size", });
     internal_static_se_lth_immun_protocol_MasterReply_descriptor =
       getDescriptor().getMessageTypes().get(12);

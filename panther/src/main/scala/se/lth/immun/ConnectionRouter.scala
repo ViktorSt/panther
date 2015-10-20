@@ -59,7 +59,7 @@ class SimplisticHandler(val dataStore: DataStore) extends Actor {
 			if (req.hasGetTracesFor)
 				replyToGetTracesFor(reply, req.getGetTracesFor)
 			val repBytes = reply.build.toByteArray
-			val sizeMsg = ReplySize.newBuilder.setSize(repBytes.length)
+			val sizeMsg = MsgSize.newBuilder.setSize(repBytes.length)
 			val headBytes = sizeMsg.build.toByteArray
 			println("SERVER: writing %d -> %d bytes: %d".format(headBytes.length, repBytes.length, repBytes.map(_.toLong).sum))
 			sender ! Write(ByteString() ++ headBytes ++ repBytes)

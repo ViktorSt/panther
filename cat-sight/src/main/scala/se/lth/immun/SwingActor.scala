@@ -16,8 +16,13 @@ import se.jt.{Util, PlotsControl}
 import scala.collection.mutable.HashMap
 
 object SwingActor {
+	import PlotBuffer._
+	
 	def props(params:CatSightParams) =
 		Props(classOf[SwingActor], params)
+		
+	case class InitSourceDefs(sourceDefs:Seq[SourceDef])
+	case class InitTraML(path:String)
 }
 
 class SwingActor(params:CatSightParams) extends Actor with Reactor {
@@ -25,6 +30,8 @@ class SwingActor(params:CatSightParams) extends Actor with Reactor {
 	import MSDataProtocolActors._
 	import CatSightPrimaries._
 	import TracePlotter._
+	import SwingActor._
+	import PlotBuffer._
 	
 	val gui = new GUI(params)
 	listenTo(gui.addAssays)
@@ -33,16 +40,20 @@ class SwingActor(params:CatSightParams) extends Actor with Reactor {
 	listenTo(gui.negFilterField)
 	listenTo(gui.plots)
 	listenTo(gui.saveAssays)
-	listenTo(gui.syncZoom)
+	listenTo(gui.zoomMode.selection)
+	listenTo(gui.selectMode.selection)
 	listenTo(gui.hideLegends)
 	listenTo(gui.addSource)
+	listenTo(gui.savePeaks)
 	listenTo(gui.assayList.selection)
 	
 	val sources = new HashMap[InetSocketAddress, Source]
 	val assayTraces = new HashMap[PlotID, AssayTrace]
+	val assayPeaks = new HashMap[PlotID, AssayTracePeak]
 	//val client = context.actorOf(MSDataProtocolActors.ClientInitiator.props(server, self))
 	//var msDataConnection:ActorRef = _
 	
+	var loadAssayParams = new LoadAssayParams
 	var assays:Seq[Assay] = Nil
 	def setAssays(a:Seq[Assay]) = {
 		assays = a
@@ -60,13 +71,20 @@ class SwingActor(params:CatSightParams) extends Actor with Reactor {
 		println("updating assay list")
 		gui.assayList.listData = 
 			assays.filter(a => gui.posFilterField.pos(a.id) && gui.negFilterField.neg(a.id))
-		gui.filterStatus.text = "showing %d of %d assays".format(gui.assayList.listData.length, assays.length)
+		gui.filterStatus.text = "%d of %d assays".format(gui.assayList.listData.length, assays.length)
 	}
+	
+	
+	import java.awt.event.KeyEvent
+	import java.awt.event.InputEvent
+	GlobalKeyBinder.bindings += ((KeyEvent.VK_Z, InputEvent.SHIFT_MASK), () => gui.zoomMode.next)
+	GlobalKeyBinder.bindings += ((KeyEvent.VK_S, InputEvent.SHIFT_MASK), () => gui.selectMode.next)
 	
 	reactions += {
 		case e:ButtonClicked if e.source == gui.addAssays =>
-			val dialog = new AddAssaysDialog( newAssays => 
-				setAssays(assays ++ newAssays)
+			val dialog = new AddAssaysDialog( 
+				newAssays => setAssays(assays ++ newAssays),
+				loadAssayParams
 			)
 			dialog.open
 			
@@ -81,21 +99,29 @@ class SwingActor(params:CatSightParams) extends Actor with Reactor {
 			
 		case e:ButtonClicked if e.source == gui.saveAssays =>
 			val savePathChooser = new FileChooser(new File("."))
-			savePathChooser.showDialog(gui.plots, null)
+			savePathChooser.showSaveDialog(gui.plots)
 			if (savePathChooser.selectedFile != null)
 				writeAssays(savePathChooser.selectedFile)
-		
+			
+		case e:ButtonClicked if e.source == gui.savePeaks =>
+			val savePathChooser = new FileChooser(new File("."))
+			savePathChooser.showSaveDialog(gui.plots)
+			if (savePathChooser.selectedFile != null)
+				writePeaks(savePathChooser.selectedFile)
+		/*
 		case e:UIElementResized if e.source == gui.plots =>
 			for (AssayTrace(tp, buff) <- assayTraces.values)
 				tp ! buff.size
-			
+			*/
 		case sc:SelectionChanged if sc.source == gui.assayList =>
 			requestAssayIndices(gui.assayList.selection.indices.toSet)
 			
-		case e:ButtonClicked if e.source == gui.syncZoom =>
-			zoomBehaviour = 
-				if (gui.syncZoom.selected) zoomAll
-				else zoomSelf
+		case sc:SelectionChanged if sc.source == gui.zoomMode =>
+			println("setting zoom mode to "+gui.zoomMode.selection.item)
+			zoomBehaviour = gui.zoomMode.selection.item
+			
+		case sc:SelectionChanged if sc.source == gui.selectMode =>
+			selectBehaviour = gui.selectMode.selection.item
 			
 		case e:ButtonClicked if e.source == gui.hideLegends =>
 			for ((id, aTrace) <- assayTraces)
@@ -106,6 +132,18 @@ class SwingActor(params:CatSightParams) extends Actor with Reactor {
 				for (s <- newSourceOpt) addSource(s)
 			)
 			dialog.open
+			
+		case e:PlotBufferZoomEvent =>
+			if (assayTraces.contains(e.id)) 
+				zoomBehaviour.send(e, assayTraces)
+			
+		case e:Select =>
+			if (assayTraces.contains(e.id)) 
+				selectBehaviour.send(e, assayTraces)
+				
+		case e:PlotBufferEvent =>
+			for (AssayTrace(plotter, buff) <- assayTraces.get(e.id)) 
+				plotter ! e
 	}
 	
 	def receive = {
@@ -119,15 +157,15 @@ class SwingActor(params:CatSightParams) extends Actor with Reactor {
 				case None =>
 					println("SWINGACTOR: got unknown connection msg to "+remote)
 			}
-			//msDataConnection = sender
 		
 		case MSDataReply(msg, nBytes, checkSum, timeTaken, remote) =>
 			println("CatSight| parsed %d bytes in %5d ms. CHECKSUM=%12d".format(nBytes, timeTaken, checkSum))
-			val id = PlotID(msg.getId, remote)
-			assayTraces.get(id) match {
-				case Some(at) =>
-					at.plotter ! msg
-				case None => println("SWINGACTOR: got msg for non-existant plotter "+id)
+			//val id = PlotID(msg.getId, remote)
+			sources(remote).onCompleted(msg.getId)
+			assayTraces.find(_._1.intID == msg.getId) match {
+				case Some((id, at)) =>
+					at.plotter ! msg -> assays.find(_.id == id.assayId).get
+				case None => println("SWINGACTOR: got msg for non-existant plotID "+msg.getId)
 			}
 			
 		case TracePlotter.PlotUpdate(id, plot, ctrl) =>
@@ -138,47 +176,64 @@ class SwingActor(params:CatSightParams) extends Actor with Reactor {
 				case None => println("SWINGACTOR: got plotUpdate for non-existant plotBuffer "+id)
 			}
 			
+		case InitSourceDefs(sourceDefs) =>
+			for (sd <- sourceDefs) addSource(sd)
+			
+		case lap:LoadAssayParams =>
+			loadAssayParams = lap
+			
+		case InitTraML(path) =>
+			val dialog = new AddAssaysDialog( 
+				newAssays => setAssays(assays ++ newAssays),
+				loadAssayParams,
+				Some(path)
+			)
+			dialog.open
+			
+		case atp:AssayTracePeak =>
+			println("SWINGACTOR: got assayTracePeak: "+atp)
+			if (assayPeaks.contains(atp.id))
+				assayPeaks(atp.id) = atp
+			else
+				assayPeaks += atp.id -> atp
+			
 	}
 	
 	
-	def zoomSelf(tp:ActorRef, msg:TracePlotterMsg) = tp ! msg
-	def zoomAll(tp:ActorRef, msg:TracePlotterMsg) = for (at <- assayTraces.values) at.plotter ! msg
-	var zoomBehaviour:(ActorRef, TracePlotterMsg) => Unit = zoomSelf
-		
-	def updateZoomBehaviour = 
-		for (AssayTrace(tp, buff) <- assayTraces.values) {
-			buff.onNewZoom = f => zoomBehaviour(tp, SetZoomFilter(f))
-			buff.onZoomPop = n => zoomBehaviour(tp, PopZoom(n))	
-		}
+	var zoomBehaviour:PlotActionBehaviour = PlotActionBehaviour.Self
+	var selectBehaviour:PlotActionBehaviour = PlotActionBehaviour.Self
 	
-	
+	var lastSelectedAssayIds:Set[Int] = Set()
 	def requestAssayIndices(assayIds:Set[Int]) = {
-		val reqSet = assayIds.flatMap(aid => sources.keys.map(addr => PlotID(aid, addr)))
-		val currSet = assayTraces.keys.toSet
-		val toRemove = currSet -- reqSet
-		val stillIn = currSet & reqSet
-		val toAdd = reqSet -- currSet
-		for (id <- toRemove)
-			context.stop(assayTraces(id).plotter)
-		assayTraces --= toRemove
-		
-		for (at <- stillIn.map(assayTraces)) at.plotBuffer.clear
-		for (id <- toAdd) {
-			val tp = context.actorOf(TracePlotter.props(self, id, gui.hideLegends.selected))
-			val buff = new PlotBuffer(id)
-			sources(id.source).connection match {
-				case Some(conn) =>
-					conn ! gui.assayList.listData(id.assayId).toTraceMsg(id.assayId, params)
-				case None =>
-					println("SWINGACTOR: connection not established for "+id.source)
+		if (assayIds != lastSelectedAssayIds) {
+			lastSelectedAssayIds = assayIds
+			val reqSet = assayIds.flatMap(aid => 
+					sources.keys.map(addr => PlotID(gui.assayList.listData(aid).id, addr))
+				)
+			val currSet = assayTraces.keys.toSet
+			val toRemove = currSet -- reqSet
+			val stillIn = currSet & reqSet
+			val toAdd = reqSet -- currSet
+			for (id <- toRemove) {
+				val at = assayTraces(id)
+				context.stop(at.plotter)
+				deafTo(at.plotBuffer)
 			}
-			assayTraces += id -> AssayTrace(tp, buff)
+			assayTraces --= toRemove
+			
+			for (at <- stillIn.map(assayTraces)) at.plotBuffer.clear
+			for (id <- toAdd) {
+				val tp = context.actorOf(TracePlotter.props(self, id, gui.hideLegends.selected))
+				val buff = new PlotBuffer(id)
+				listenTo(buff)
+				assayTraces += id -> AssayTrace(tp, buff)
+				sources(id.source).query(assays.find(_.id == id.assayId).get.toTraceMsg(id.intID, params))
+			}
+			
+			gui.setPlots(assayTraces)
+			for (at <- assayTraces.values)
+				at.plotter ! at.plotBuffer.size
 		}
-		
-		updateZoomBehaviour
-		gui.setPlots(assayTraces)
-		for (at <- assayTraces.values)
-			at.plotter ! at.plotBuffer.size
 	}
 	
 	def writeAssays(f:File) = {
@@ -206,6 +261,44 @@ class SwingActor(params:CatSightParams) extends Actor with Reactor {
 			for (f <- a.frags)
 				writeRow(true)(a.id, f.id, f.precMz, f.fragMz)
 		}
+		w.close()
+	}
+	
+	def writePeaks(f:File) = {
+		val peaks = assayPeaks.values.toSeq.sortBy(_.id.assayId)
+		val w = new BufferedWriter(new FileWriter(f))
+		
+		def writeRow(qoute:Boolean)(a:Any*) = 
+			w.write(a.map(_ match {
+				case s:String => 
+					if (qoute) params.outQuote + s + params.outQuote
+					else s
+				case x => x.toString
+			}).mkString(params.outSep) + "\n")
+			
+		writeRow(false)(
+				"assayID",
+				"file",
+				"peakID",
+				"intensitySum",
+				"intensityMax",
+				"rtStart",
+				"rtApex",
+				"rtEnd"
+			)
+			
+		for (p <- peaks)
+			writeRow(false)(
+					p.id.assayId,
+					sources(p.id.source).name,
+					p.peakID,
+					"%.5e".format(p.intensitySum),
+					"%.5e".format(p.intensityMax),
+					"%.4f".format(p.rtStart),
+					"%.4f".format(p.rtApex),
+					"%.4f".format(p.rtEnd)
+				)
+		
 		w.close()
 	}
 }

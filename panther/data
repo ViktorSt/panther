@@ -1,0 +1,8 @@
+napedro_L120227_008_SW
+boundaryMin : 20 boundaryMax : 20
+peakDetectionAndGrouping method: 2
+Number of peaks not found: 282 of 1339 possible and 14500 candidates
+Finding rate: 0.7893950709484691
+False positive rate: 0.9271034482758621
+Time elapsed: 86849.0ms
+
