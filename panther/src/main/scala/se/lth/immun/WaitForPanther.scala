@@ -45,7 +45,7 @@ object WaitForPanther {
           println("closing")
           System.exit(0)
         }else{
-          Thread.sleep(10000)
+          Thread.sleep(100000)
           sender ! request
         }
 

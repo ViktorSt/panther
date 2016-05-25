@@ -64,6 +64,11 @@
     	<artifactId>TraML</artifactId>
     	<version>1.1.0</version>
     </dependency>
+    <dependency>
+    	<groupId>com.github.wookietreiber</groupId>
+    	<artifactId>scala-chart_2.10</artifactId>
+    	<version>0.5.0</version>
+    </dependency>
   </dependencies>
   
   <repositories>
